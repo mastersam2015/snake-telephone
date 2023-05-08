@@ -1,0 +1,273 @@
+program aaa;
+
+
+
+
+{
+kod-do niej przypisywana jest wartosc znaku za pomoca funkcji ord
+zm -   jesli przyjmuje wartosc 0 to informacja o tym ze kwadracik
+       do zlapania zostal zjedzony jesli 0 to znaczy ze niezostal
+       zjedzony
+petla- jesli przyjmuje wartosc 1 petla bedzie sie wykonywac jesli 0
+       petla zostanie przerwana
+cheat- jesli wartosc jej jest 1 wtedy pomijany zostaje warunek ukonczenia
+       gry
+shiza- jesli ma wartosc 1 to pozwala na narysowanie kwadracika do
+       zjedzenia
+}
+var znak,kod,zm,petla,cheat,shiza,key2,licz,ik,ik2,x,y,l,n,x2,y2,x3,y3,r,speed,petla2,pom,pom2:integer;
+{
+ik - zmienna wykozystywana do petli
+ik2- zmienna wykozystywana do petli
+x  - zapisywana jest do niej pierwsza spolzedna 1-szego elementu wezyka
+y  - zapisywana jest do niej druga spolzedna 1-szego elementu wezyka
+l  - zapisywany jest wynik
+n  - wskazuje kierunek w ktorym ma sie poruszac wezyk
+x2 - pierwsza wspolzedna ostatniego elementu wezyka
+y2 - druga wspolzedna ostatniego elementu wezyka
+x3 - pierwsza wspolzedna kwadratu do zjedzenia
+y3 - druga wspolzedna kwadratu do zjedzenia
+speed - decyduje o szybkosci gry
+}
+tab : array [1..100,1..2] of integer;
+{
+do tablicy dwuwymiarowej wpisywane sa wspolzedne elementow wezyka
+}
+
+
+{----------------GRAFA-----------------}
+{procedura wyswietla tryb graficzny w rozdzielczosci 320x200 256 kolorow}
+procedure graf;
+begin
+ setColor(0, 0, 0);
+fillRect(0, 0, getWidth, getHeight);
+repaint;
+end;
+
+
+
+{-----------------------PIX--------------------}
+{rysuje pierwszy element wezyka koloru czerwonego}
+procedure pix;
+begin
+
+ setColor(255, 0, 0);
+fillRect(x, y, 10, 10);
+
+
+end;
+{------------------------PIX2----------------------}
+{rysuje ostatni element wezyka koloru czarnego}
+procedure pix2;
+begin
+
+ setColor(0, 0, 0);
+fillRect(x2, y2, 10, 10);
+
+
+end;
+{------------------------PIX3----------------------}
+{rysuje kwadracik do zjedzenia}
+procedure pix3;
+begin
+
+if shiza=1 then
+begin
+ while x3=0 do
+ begin
+ x3:=random(getWidth/10);
+ end;
+
+ while y3=0 do
+
+ begin
+ y3:=random(getHeight/10);
+ end;
+
+ x3:=x3*10;
+ y3:=y3*10;
+end;
+
+setColor(0, 255, 0);
+fillRect(x3, y3, 10, 10);
+
+
+
+end;
+{--------------------------PROGRAM------------------------}
+begin
+ setColor(0, 0, 0);
+fillRect(0, 0, getWidth, getHeight);
+setColor(255, 255, 255);
+    drawText('predkosc - przycisnij liczbe', 0, 0);
+    drawText('w skali od 1 do 9', 0, 10);
+repaint;
+while (GetKeyPressed = 0) do begin
+ if (GetKeyPressed <> 0) then
+   begin
+key2:=GetKeyPressed;
+end;
+
+end;
+
+
+if (key2=KE_KEY1) then begin speed:=1; end;
+if (key2=KE_KEY2) then begin speed:=2; end;
+if (key2=KE_KEY3) then begin speed:=3; end;
+if (key2=KE_KEY4) then begin speed:=4; end;
+if (key2=KE_KEY5) then begin speed:=5; end;
+if (key2=KE_KEY6) then begin speed:=6; end;
+if (key2=KE_KEY7) then begin speed:=7; end;
+if (key2=KE_KEY8) then begin speed:=8; end;
+if (key2=KE_KEY9) then begin speed:=9; end;
+
+
+
+
+if speed = 0 then begin speed:=3; end;
+
+
+speed:=100*speed;
+
+{-------------wprowadzanie danych----------}
+graf;
+
+l:=4;
+
+x:=0;
+y:=20;
+pix;
+tab[l,1]:=x;
+tab[l,2]:=y;
+x2:=tab[l,1];
+y2:=tab[l,2];
+x:=10;
+y:=20;
+pix;
+tab[l-1,1]:=x;
+tab[l-1,2]:=y;
+x:=20;
+y:=100;
+pix;
+tab[l-2,1]:=x;
+tab[l-2,2]:=y;
+x:=30;
+y:=20;
+n:=2;
+shiza:=1;
+{czekanie na zaladowanie trybu graficznego
+while (GetKeyPressed = 0) do
+ begin
+ end;
+}
+{glowna petla programu}
+licz:=0;
+petla2:=1;
+while (petla2=1) do
+begin
+
+{
+licz:=licz+1;
+setColor(255, 255, 255);
+    drawText('el '+integerToString(l), 0, 0);
+    }
+repaint;
+
+
+{wczytywanie znaku z klawiatury}
+
+   znak:=getKeyClicked;
+   kod:=znak;
+
+{lewo}
+ if (KE_KEY4=kod) then begin
+  if(n<>2) then begin
+     n:=4; end;
+     end;
+{dol}
+ if (KE_KEY8=kod) then begin
+  if(n<>1) then begin
+     n:=3;
+     end;
+     end;
+{prawo}
+ if (KE_KEY6=kod) then begin
+  if(n<>4) then begin
+     n:=2; 
+     end;
+     end;
+{gora}
+ if (KE_KEY2=kod) then begin
+ if(n<>3) then begin
+      n:=1; 
+      end;
+     end;
+
+
+if zm=0 then
+begin
+x3:=0;
+y3:=0;
+pix3;
+shiza:=0;
+zm:=1;
+end;
+pix3;
+pix;
+tab[1,1]:=x;
+tab[1,2]:=y;
+pix2;
+
+if (x3=x)and(y3=y) then
+ begin
+ zm:=0;
+ l:=l+1;
+ shiza:=1;
+ end;
+
+
+ik:=2;
+
+while ik <= l do
+begin
+{warunek ukonczenia gry}
+ if ((x=tab[ik,1])and(y=tab[ik,2]))or(x<0)or(x>getWidth)or(y<0)or(y>getHeight)then
+  begin
+setColor(255, 255, 255);
+  drawText('koniec. twoj wynik: '+integerToString(l), 0, 10);
+repaint;
+ while (GetKeyPressed = 0) do begin
+
+end;
+  petla:=2;
+  ik:=l+1;
+  end;
+ik:=ik+1;
+end;
+
+if n=1 then y:=y-10;
+if n=2 then x:=x+10;
+if n=3 then y:=y+10;
+if n=4 then x:=x-10;
+{TU JEST BLAD}
+pom2:=l+4;
+for ik:=0 to pom2-1 do
+ begin
+ pom:= (pom2 - ik)+1;
+ tab[pom,1]:=tab[pom-1,1];
+ tab[pom,2]:=tab[pom-1,2];
+{
+setColor(255, 255, 255);
+    drawText('pom '+integerToString(pom), 0, pom*10);
+repaint;
+}
+
+ end;
+x2:=tab[l,1];
+y2:=tab[l,2];
+
+
+
+delay(speed);
+end;
+end.
